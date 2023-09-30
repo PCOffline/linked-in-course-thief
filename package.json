@@ -7,10 +7,13 @@
     "start": "node dist/index.js",
     "watch": "tsc -w"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.3.1",
+    "puppeteer": "^21.3.6",
     "typescript": "^5.2.2"
   }
 }
