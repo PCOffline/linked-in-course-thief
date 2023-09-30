@@ -15,7 +15,9 @@ const browser = await puppeteer.launch({
 });
 const page = await browser.newPage();
 
-page.setDefaultTimeout(+(process.env.LOGIN_TIMEOUT ?? defaultValues.loginTimeout));
+page.setDefaultTimeout(
+  +(process.env.LOGIN_TIMEOUT ?? defaultValues.loginTimeout),
+);
 
 await page.goto(process.env.COURSE_URL);
 await page.waitForSelector(elementQueries.video.video);
@@ -76,7 +78,11 @@ for (let index = 0; index < sectionsLength; index++) {
     await page.click(
       `${sectionQuery} > ul > li:nth-child(${episodeIndex + 1}) > a`,
     );
-    await sleep(+(process.env.DELAY_BETWEEN_EPISODES ?? defaultValues.delayBetweenEpisodes));
+    await sleep(
+      +(
+        process.env.DELAY_BETWEEN_EPISODES ?? defaultValues.delayBetweenEpisodes
+      ),
+    );
     episodes.push(await getCurrentEpisode());
   }
 
@@ -94,7 +100,9 @@ await writeFile(
     (sectionsString: string, section: Section) =>
       `${sectionsString}## ${section.title.trim()}\n${section.episodes.reduce(
         (episodesString: string, episode: Episode, index: number): string =>
-          `${episodesString}${index}. [${episode.title.trim()}](${episode.link}) - ${episode.duration}\n`,
+          `${episodesString}${index}. [${episode.title.trim()}](${
+            episode.link
+          }) - ${episode.duration}\n`,
         '',
       )}\n`,
     '',
