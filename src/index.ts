@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer';
 import 'dotenv/config';
 import { writeFile } from 'fs/promises';
-import { elementQueries, sleep } from './utils.js';
+import { elementQueries, sleep, defaultValues } from './utils.js';
 import type { Episode, Section } from './types.js';
 
 if (!process.env.COURSE_URL) {
@@ -15,16 +15,10 @@ const browser = await puppeteer.launch({
 });
 const page = await browser.newPage();
 
-page.setDefaultTimeout(120_000);
+page.setDefaultTimeout(+(process.env.LOGIN_TIMEOUT ?? defaultValues.loginTimeout));
 
 await page.goto(process.env.COURSE_URL);
 await page.waitForSelector(elementQueries.video.video);
-
-// Sign in
-
-// await page.click('a.enterprise-interstitial__sign-in-btn');
-// await sleep(1000);
-// await page.type('input.auth-id-input', process.env.EMAIL);
 
 const getCurrentEpisode = async (): Promise<Episode> => ({
   title: await page.title(),
@@ -82,7 +76,7 @@ for (let index = 0; index < sectionsLength; index++) {
     await page.click(
       `${sectionQuery} > ul > li:nth-child(${episodeIndex + 1}) > a`,
     );
-    await sleep(5000);
+    await sleep(+(process.env.DELAY_BETWEEN_EPISODES ?? defaultValues.delayBetweenEpisodes));
     episodes.push(await getCurrentEpisode());
   }
 

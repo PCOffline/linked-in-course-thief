@@ -11,3 +11,8 @@ export const elementQueries = {
 
   },
 };
+
+export const defaultValues = {
+  loginTimeout: 120_000,
+  delayBetweenEpisodes: 5000,
+}
