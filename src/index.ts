@@ -102,7 +102,7 @@ await writeFile(
         (episodesString: string, episode: Episode, index: number): string =>
           `${episodesString}${index}. [${episode.title.trim()}](${
             episode.link
-          }) - ${episode.duration}\n`,
+          }) ${episode.duration}\n`,
         '',
       )}\n`,
     '',
